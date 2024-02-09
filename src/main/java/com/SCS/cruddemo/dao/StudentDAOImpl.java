@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class StudentDAOImpl implements StudentDAO{
+public class StudentDAOImpl implements StudentDAO {
 
     private EntityManager entityManager;
 
@@ -27,13 +27,13 @@ public class StudentDAOImpl implements StudentDAO{
 
     @Override
     public Student findByID(Integer id) {
-        return entityManager.find(Student.class,id);
+        return entityManager.find(Student.class, id);
     }
 
     @Override
     public List<Student> findAll() {
 
-        TypedQuery<Student>theQuery=entityManager.createQuery("FROM Student order by firstName desc",Student.class);
+        TypedQuery<Student> theQuery = entityManager.createQuery("FROM Student order by firstName desc", Student.class);
 
 
         return theQuery.getResultList();
@@ -41,8 +41,14 @@ public class StudentDAOImpl implements StudentDAO{
 
     @Override
     public List<Student> findByLastName(String lastName) {
-        TypedQuery<Student>theQuery=entityManager.createQuery("FROM Student where lastName=:lName ",Student.class);
-        theQuery.setParameter("lName",lastName);
+        TypedQuery<Student> theQuery = entityManager.createQuery("FROM Student where lastName=:lName ", Student.class);
+        theQuery.setParameter("lName", lastName);
         return theQuery.getResultList();
+    }
+
+    @Override
+    @Transactional
+    public void update(Student student) {
+        entityManager.merge(student);
     }
 }
