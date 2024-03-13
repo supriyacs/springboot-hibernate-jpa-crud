@@ -18,6 +18,7 @@ private List<Student>students;
 
 @PostConstruct
 public void loadData(){
+  students = new ArrayList<>();
   students.add(new Student("Devi","PS"));
   students.add(new Student("Arathy","Yadu"));
   students.add(new Student("Daya","VV"));
