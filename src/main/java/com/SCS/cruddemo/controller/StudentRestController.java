@@ -26,13 +26,11 @@ public void loadData(){
 
   @GetMapping("/students")
   public List<Student> getStudents(){
-
-    return students;
+  return students;
   }
 
   @GetMapping("/students/{studentID}")
   public Student getStudent(@PathVariable Integer studentID){
-
-    return  students.get(studentID);
+  return  students.get(studentID);
   }
 }
