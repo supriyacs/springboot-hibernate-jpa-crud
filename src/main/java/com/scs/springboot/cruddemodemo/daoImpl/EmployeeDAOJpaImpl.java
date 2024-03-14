@@ -4,6 +4,7 @@ import com.scs.springboot.cruddemodemo.dao.EmployeeDAO;
 import com.scs.springboot.cruddemodemo.entity.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,36 +16,38 @@ public class EmployeeDAOJpaImpl implements EmployeeDAO {
   private EntityManager entityManager;
 
   @Autowired
-  public EmployeeDAOJpaImpl(EntityManager entityManager){
-   this.entityManager=entityManager;
+  public EmployeeDAOJpaImpl(EntityManager entityManager) {
+    this.entityManager = entityManager;
   }
+
   @Override
   public List<Employee> findAll() {
 
-    TypedQuery<Employee>query= entityManager.createQuery("from Employee", Employee.class);
-    List<Employee>employees=query.getResultList();
+    TypedQuery<Employee> query = entityManager.createQuery("from Employee", Employee.class);
+    List<Employee> employees = query.getResultList();
     return employees;
   }
 
   @Override
   public Employee findByID(int id) {
 
-    Employee emp=entityManager.find(Employee.class,id);
+    Employee emp = entityManager.find(Employee.class, id);
     return emp;
   }
 
+  @Transactional
   @Override
   public Employee createEmployee(Employee employee) {
-    return null;
+    Employee dBmployee=entityManager.merge(employee);
+    return dBmployee;
   }
 
+  @Transactional
   @Override
-  public Employee updateEmployee(Employee employee) {
-    return null;
+  public void deleteEmployeeById(int id) {
+    Employee delEmployee=entityManager.find(Employee.class,id);
+    entityManager.remove(delEmployee);
   }
 
-  @Override
-  public Employee deleteEmployeeById(int id) {
-    return null;
-  }
+
 }
