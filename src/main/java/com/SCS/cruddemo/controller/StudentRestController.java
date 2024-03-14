@@ -44,15 +44,5 @@ public void loadData(){
   }
 
 
-  @ExceptionHandler
-  public ResponseEntity<StudentErrorResponse> handleStudentNotFoundException(StudentNotFoundException  e){
-    StudentErrorResponse response=new StudentErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage(),System.currentTimeMillis());
-  return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
-  }
 
-  @ExceptionHandler
-  public ResponseEntity<StudentErrorResponse> handleException(Exception  e){
-    StudentErrorResponse response=new StudentErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage(),System.currentTimeMillis());
-    return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-  }
 }
