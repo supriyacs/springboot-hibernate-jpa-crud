@@ -1,6 +1,7 @@
 package com.scs.springboot.cruddemodemo.rest;
 
 import com.scs.springboot.cruddemodemo.entity.Employee;
+import com.scs.springboot.cruddemodemo.exceptions.EmployeeNotFoundException;
 import com.scs.springboot.cruddemodemo.service.EmployeeService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class EmployeeRestController {
 
   @GetMapping("/employees/{id}")
   public Employee getEmployeeByID(@PathVariable Integer id) {
+    if(employeeService.findByID(id)==null){
+      throw new EmployeeNotFoundException("Employee not found with ID= "+id);
+    }
     return employeeService.findByID(id);
   }
 
