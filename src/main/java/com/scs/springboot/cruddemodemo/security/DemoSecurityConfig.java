@@ -1,13 +1,13 @@
 package com.scs.springboot.cruddemodemo.security;
 
+import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -15,27 +15,10 @@ public class DemoSecurityConfig {
 
 
   @Bean
-  public InMemoryUserDetailsManager userDetailsManager() {
-
-    UserDetails leslie = User.builder()
-        .username("leslie")
-        .password("{noop}leslie")
-        .roles("EMPLOYEE")
-        .build();
-
-    UserDetails emma = User.builder()
-        .username("emma")
-        .password("{noop}emma")
-        .roles("EMPLOYEE", "MANAGER")
-        .build();
-
-    UserDetails avani = User.builder()
-        .username("avani")
-        .password("{noop}avani")
-        .roles("EMPLOYEE", "MANAGER", "ADMIN")
-        .build();
-    return new InMemoryUserDetailsManager(leslie, emma, avani);
+  UserDetailsManager userDetailsManager(DataSource dataSource){
+    return  new JdbcUserDetailsManager(dataSource);
   }
+
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
